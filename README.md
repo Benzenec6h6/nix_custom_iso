@@ -51,7 +51,7 @@ To make the live environment usable without any extra setup, the following tools
 
 - **git**
 - **pciutils** — hardware / GPU inspection
-- **whois** — network diagnostics
+- **whois** — provides `mkpasswd` for generating password hashes used in `hashedPassword`
 - **sudo**
 - **curl**, **wget**
 - **vim**, **nano**
