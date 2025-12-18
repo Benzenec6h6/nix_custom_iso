@@ -17,7 +17,7 @@
             sandbox = true;
             #sandbox-fallback = true;
             extra-experimental-features = [
-              "nix-command"flakes
+              "nix-command"
               "flakes"
             ];
           };
