@@ -27,7 +27,7 @@ In the official NixOS installer ISO, the following features are disabled by defa
 
 This is inconvenient if your workflow is already flake-based, because:
 
-- You cannot directly use nix build or nixos-install --flake
+- You cannot directly use nix build or nix shell
 - Temporary configuration changes are required in the live environment
 
 This ISO enables flakes out of the box:
