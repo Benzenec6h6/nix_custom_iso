@@ -48,10 +48,10 @@
             wget
             vim
             nano
-            disko.packages.${pkgs.system}.disko
+            disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
           ];
 
-          isoImage.isoName = "nixos-custom-flakes.iso";
+          image.fileName = "nixos-custom-flakes.iso";
         })
       ];
     };
