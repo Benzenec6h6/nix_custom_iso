@@ -1,14 +1,19 @@
 {
   description = "Custom NixOS Live ISO with flakes & sandbox disabled";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-  outputs = { self, nixpkgs, ... }: {
+  outputs = { self, nixpkgs, disko, ... }: {
     nixosConfigurations.custom-iso = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       modules = [
         "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-base.nix"
+        disko.nixosModules.disko
 
         ({ pkgs, ... }: {
 
@@ -43,6 +48,7 @@
             wget
             vim
             nano
+            disko.packages.${pkgs.system}.disko
           ];
 
           isoImage.isoName = "nixos-custom-flakes.iso";
