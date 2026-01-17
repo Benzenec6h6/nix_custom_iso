@@ -19,8 +19,6 @@
 
           # --- Nix 設定 ---
           nix.settings = {
-            sandbox = true;
-            #sandbox-fallback = true;
             extra-experimental-features = [
               "nix-command"
               "flakes"
