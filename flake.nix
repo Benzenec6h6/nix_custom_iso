@@ -23,6 +23,8 @@
               "nix-command"
               "flakes"
             ];
+            download-buffer-size = 536870912;
+            max-substitution-jobs = 8;
           };
 
           # --- DNS ---
