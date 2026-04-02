@@ -3,17 +3,24 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, disko, ... }: {
+  outputs = { self, nixpkgs, disko, sops-nix, ... }: {
     nixosConfigurations.custom-iso = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       modules = [
         "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-base.nix"
         disko.nixosModules.disko
+        sops-nix.nixosModules.sops
 
         ({ pkgs, ... }: {
 
@@ -41,11 +48,17 @@
           # --- live 環境のツール ---
           environment.systemPackages = with pkgs; [
             git
-            pciutils
-            whois
-            sudo
             curl
             wget
+            pciutils
+            usbutils
+            sops
+            age
+            ssh-to-age
+            whois
+            gnused
+            gawk
+            sudo 
             vim
             nano
             disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
