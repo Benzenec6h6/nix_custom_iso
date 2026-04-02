@@ -1,0 +1,58 @@
+name: Weekly Update and Release
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  update-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v12
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: Update flake.lock
+        run: nix flake update
+
+      - name: Commit and push flake.lock
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: weekly flake.lock update"
+          file_pattern: flake.lock
+
+      - name: Build ISO
+        run: nix build .#nixosConfigurations.custom-iso.config.system.build.isoImage
+
+      - name: Rename ISO for release
+        run: cp result/iso/*.iso nixos-latest-custom.iso
+
+      # ★ date を環境変数に入れておく
+      - name: Set release date
+        run: echo "RELEASE_DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      # ★ "latest" タグを強制的に現在のコミットに付け直す
+      - name: Force-update latest tag
+        run: |
+          git tag -f latest
+          git push origin latest --force
+
+      - name: Update Latest Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "latest"
+          name: "Latest Custom ISO"
+          body: "Automatically built on ${{ env.RELEASE_DATE }}"
+          artifacts: "nixos-latest-custom.iso"
+          allowUpdates: true
+          removeArtifacts: true
+          makeLatest: true
+          tag_exists_error: false  # ★ タグ衝突エラーを抑制
