@@ -44,7 +44,7 @@
           # --- システムパッケージ ---
           environment.systemPackages = with pkgs; [
             git curl wget pciutils usbutils
-            sops age ssh-to-age
+            sops age ssh-to-age sbctl
             whois gnused gawk
             vim nano
             disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
