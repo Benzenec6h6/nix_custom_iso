@@ -47,6 +47,7 @@
             sops age ssh-to-age sbctl
             whois gnused gawk
             vim nano
+            links2
             disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
           ];
 
