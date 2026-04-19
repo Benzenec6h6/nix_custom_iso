@@ -49,7 +49,7 @@
 
           # --- ハードウェア互換性 / カーネル ---
           boot.kernelPackages = pkgs.linuxPackages_latest;
-          boot.supportedFilesystems = [ "zfs" "btrfs" "ext4" "vfat" "ntfs" "exfat" ];
+          boot.supportedFilesystems = [ "btrfs" "ext4" "vfat" "ntfs" "exfat" ];
 
           # --- ネットワーク設定 ---
           networking.networkmanager.enable = true;
