@@ -48,7 +48,7 @@
           };
 
           # --- ハードウェア互換性 / カーネル ---
-          boot.kernelPackages = pkgs.linuxPackages_latest;
+          boot.kernelPackages = pkgs.linuxPackages;
           boot.supportedFilesystems = [ "btrfs" "ext4" "vfat" "ntfs" "exfat" ];
 
           # --- ネットワーク設定 ---
