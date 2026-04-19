@@ -42,7 +42,6 @@
               max-jobs = "auto";
               cores = 0;
               auto-optimise-store = true;
-              download-buffer-size = 536870912;
               #max-substitution-jobs = 8;
             };
           };
@@ -70,8 +69,7 @@
           ];
 
           # ISOファイル名の指定
-          isoImage.isoName = "nixos-custom-flakes.iso";
-          # image.fileName は古い形式のことがあるため、isoImage.isoName を推奨
+          image.fileName = "nixos-custom-flakes.iso";
         })
       ];
     };
