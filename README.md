@@ -44,15 +44,34 @@ nix.settings = {
 
 With this setup, flake-based workflows work immediately after booting the live system.
 
+## Why stable kernel is used
+
+Unlike the official bleeding-edge approach, this ISO uses the **stable/LTS kernel**.
+
+- **ZFS Compatibility:** Prevents build errors frequently caused by ZFS not yet supporting the latest kernel versions.
+- **Reliability:** Ensures a consistent boot experience across various hardware without kernel-related regressions.
+
+## Speeding up builds & Stability
+
+- **Lix Package Manager:** Used for faster evaluation and improved reliability over standard Nix.
+- **ZRAM Enabled:** To prevent Out-Of-Memory (OOM) errors during heavy build tasks in the live environment.
+- **Binary Caches:** Referencing multiple mirrors to speed up package fetching:
+    - 'cache.lix.systems'
+    - 'attic.xuyh0120.win/lantian'
+    - 'cache.garnix.io'
+    - 'cache.nixos.org'
+
 ## Included tools
 
 This ISO is tailored to **my personal dotfiles and installation workflow**.  
 To make the live environment usable without any extra setup, the following tools are **preinstalled**:
 
 - **git**
+- **disko** - Disk settings
+- **sops-nix**,**sops**,**age**,**ssh-to-age** - Encryption of Confidential Information
+- **sbctl** - Secure Boot Settings
 - **pciutils** — hardware / GPU inspection
-- **whois** — provides `mkpasswd` for generating password hashes used in `hashedPassword`
-- **sudo**
+- **mkpasswd** — provides `mkpasswd` for generating password hashes used in `hashedPassword`
 - **curl**, **wget**
 - **vim**, **nano**
 
