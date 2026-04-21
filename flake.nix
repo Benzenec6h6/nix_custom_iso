@@ -1,5 +1,5 @@
 {
-  description = "Custom NixOS Live ISO with flakes & latest kernel";
+  description = "Custom NixOS Live ISO with flakes";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -50,6 +50,9 @@
           boot.kernelPackages = pkgs.linuxPackages;
           boot.supportedFilesystems = [ "btrfs" "ext4" "vfat" "ntfs" "exfat" ];
 
+          # Live環境でのメモリ不足（OOM）を防ぐためのZRAM有効化
+          zramSwap.enable = true;
+          
           # --- ネットワーク設定 ---
           networking.networkmanager.enable = true;
           networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
@@ -62,7 +65,7 @@
           environment.systemPackages = with pkgs; [
             git curl wget pciutils usbutils
             sops age ssh-to-age sbctl
-            whois gnused gawk
+            mkpasswd gnused gawk
             vim nano
             links2
             disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
