@@ -13,7 +13,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, sops-nix, ... }: {
+  outputs = {
+    self,
+    nixpkgs,
+    disko,
+    sops-nix,
+    ...
+  }: {
     nixosConfigurations.custom-iso = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -21,19 +27,21 @@
         disko.nixosModules.disko
         sops-nix.nixosModules.sops
 
-        ({ pkgs, ... }: {
+        ({pkgs, ...}: {
           # --- Nix 設定 ---
           nix = {
             package = pkgs.lixPackageSets.stable.lix;
             settings = {
-              extra-experimental-features = [ "nix-command" "flakes" ];
-              substituters = [ 
+              extra-experimental-features = ["nix-command" "flakes"];
+              substituters = [
+                "https://niri.cachix.org"
                 "https://cache.lix.systems"
                 "https://attic.xuyh0120.win/lantian"
                 "https://cache.garnix.io"
                 "https://cache.nixos.org"
               ];
               trusted-public-keys = [
+                "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
                 "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
                 "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
                 "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
@@ -48,14 +56,14 @@
 
           # --- ハードウェア互換性 / カーネル ---
           boot.kernelPackages = pkgs.linuxPackages;
-          boot.supportedFilesystems = [ "btrfs" "ext4" "vfat" "ntfs" "exfat" ];
+          boot.supportedFilesystems = ["btrfs" "ext4" "vfat" "ntfs" "exfat"];
 
           # Live環境でのメモリ不足（OOM）を防ぐためのZRAM有効化
           zramSwap.enable = true;
-          
+
           # --- ネットワーク設定 ---
           networking.networkmanager.enable = true;
-          networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+          networking.nameservers = ["1.1.1.1" "8.8.8.8"];
           services.resolved.enable = true;
 
           # --- 便利サービス (SSH) ---
@@ -63,10 +71,20 @@
 
           # --- システムパッケージ ---
           environment.systemPackages = with pkgs; [
-            git curl wget pciutils usbutils
-            sops age ssh-to-age sbctl
-            mkpasswd gnused gawk
-            vim nano
+            git
+            curl
+            wget
+            pciutils
+            usbutils
+            sops
+            age
+            ssh-to-age
+            sbctl
+            mkpasswd
+            gnused
+            gawk
+            vim
+            nano
             links2
             disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
           ];
